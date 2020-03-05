@@ -9,7 +9,6 @@ C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.csprojAs
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.csproj.CoreCompileInputs.cache
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.RazorAssemblyInfo.cache
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.RazorAssemblyInfo.cs
-C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.AssemblyInfoInputs.cache
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.AssemblyInfo.cs
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.TagHelpers.input.cache
@@ -33,3 +32,4 @@ C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.Views.pd
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.dll
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.pdb
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.csproj.CopyComplete
+C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
