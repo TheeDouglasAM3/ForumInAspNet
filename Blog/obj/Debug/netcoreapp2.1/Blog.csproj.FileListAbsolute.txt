@@ -33,3 +33,8 @@ C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.dll
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.pdb
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Blog.csproj.CopyComplete
 C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\UserSecretsAssemblyInfo.cs
+C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Razor\Views\Posts\Create.g.cshtml.cs
+C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Razor\Views\Posts\Delete.g.cshtml.cs
+C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Razor\Views\Posts\Details.g.cshtml.cs
+C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Razor\Views\Posts\Edit.g.cshtml.cs
+C:\Users\Douglas\Desktop\BlogInAspNet\Blog\obj\Debug\netcoreapp2.1\Razor\Views\Posts\Index.g.cshtml.cs

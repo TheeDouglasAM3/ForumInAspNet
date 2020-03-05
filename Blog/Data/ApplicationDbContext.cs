@@ -21,5 +21,7 @@ namespace Blog.Data
             modelBuilder.Entity<Post>().HasKey(p => p.Id);
             modelBuilder.Entity<Post>().HasOne(p => p.User);
         }
+
+        public DbSet<Blog.Models.Post> Post { get; set; }
     }
 }
