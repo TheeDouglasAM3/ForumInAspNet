@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,17 +11,13 @@ namespace Blog.Models
 {
     public class Post : BaseModel
     {
-        public Post(string title, string description, string linkImage)
+        public Post()
         {
-            Title = title;
-            Description = description;
-            LinkImage = linkImage;
         }
 
         [ForeignKey("UserId")]
         public string UserId { get; set; }
 
-        [Required]
         public virtual IdentityUser User { get; private set; }
 
         [Required]
