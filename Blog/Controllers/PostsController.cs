@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Blog.Data;
 using Blog.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Blog.Controllers
 {
@@ -57,10 +59,12 @@ namespace Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,Title,Description,LinkImage,Id")] Post post)
+        public async Task<IActionResult> Create([Bind("Title,Description,LinkImage,Id")] Post post)
         {
             if (ModelState.IsValid)
             {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                post.UserId = userId;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,7 +95,7 @@ namespace Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,Title,Description,LinkImage,Id")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Title,Description,LinkImage,Id,UserId")] Post post)
         {
             if (id != post.Id)
             {
@@ -102,8 +106,14 @@ namespace Blog.Controllers
             {
                 try
                 {
-                    _context.Update(post);
-                    await _context.SaveChangesAsync();
+                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    
+                    if (userId == post.UserId)
+                    {
+                        _context.Update(post);
+                        await _context.SaveChangesAsync();
+                    }
+                    
                 }
                 catch (DbUpdateConcurrencyException)
                 {
