@@ -9,40 +9,37 @@ using Blog.Data;
 using Blog.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Blog.Repositories;
 
 namespace Blog.Controllers
 {
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IPostRepository _postRepository;
 
-        public PostsController(ApplicationDbContext context)
+        public PostsController(ApplicationDbContext context, IPostRepository postRepository)
         {
             _context = context;
+            _postRepository = postRepository;
         }
 
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Post.Include(p => p.User);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _postRepository.GetAllAsync());
         }
 
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var post = await _context.Post
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var post = await _postRepository.GetAsync(id);
+
             if (post == null)
-            {
                 return NotFound();
-            }
 
             return View(post);
         }
@@ -63,10 +60,7 @@ namespace Blog.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                post.UserId = userId;
-                _context.Add(post);
-                await _context.SaveChangesAsync();
+                await _postRepository.AddAsync(User, post);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", post.UserId);
@@ -81,7 +75,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post.FindAsync(id);
+            var post = await _postRepository.GetAsync(id);
             if (post == null)
             {
                 return NotFound();
@@ -98,34 +92,23 @@ namespace Blog.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Title,Description,LinkImage,Id,UserId")] Post post)
         {
             if (id != post.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    
-                    if (userId == post.UserId)
-                    {
-                        _context.Update(post);
-                        await _context.SaveChangesAsync();
-                    }
+                    await _postRepository.UpdateAsync(User, post);
                     
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(post.Id))
-                    {
+                    if (!_postRepository.PostExists(post.Id))
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", post.UserId);
@@ -140,9 +123,7 @@ namespace Blog.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post
-                .Include(p => p.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var post = await _postRepository.GetAsync(id);
             if (post == null)
             {
                 return NotFound();
@@ -156,15 +137,9 @@ namespace Blog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var post = await _context.Post.FindAsync(id);
-            _context.Post.Remove(post);
-            await _context.SaveChangesAsync();
+            await _postRepository.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PostExists(int id)
-        {
-            return _context.Post.Any(e => e.Id == id);
-        }
     }
 }
