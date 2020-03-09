@@ -13,6 +13,7 @@ using Blog.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Blog.Services;
+using Blog.Repositories;
 
 namespace Blog
 {
@@ -47,6 +48,7 @@ namespace Blog
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddTransient<IDataService, DataService>();
+            services.AddTransient<IPostRepository, PostRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
