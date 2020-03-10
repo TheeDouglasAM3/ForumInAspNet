@@ -10,6 +10,7 @@ using Blog.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Blog.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blog.Controllers
 {
@@ -45,6 +46,7 @@ namespace Blog.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
@@ -56,6 +58,7 @@ namespace Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Title,Description,LinkImage,Id")] Post post)
         {
             if (ModelState.IsValid)
@@ -68,6 +71,7 @@ namespace Blog.Controllers
         }
 
         // GET: Posts/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,6 +80,10 @@ namespace Blog.Controllers
             }
 
             var post = await _postRepository.GetAsync(id);
+
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != post.UserId)
+                return NotFound();
+
             if (post == null)
             {
                 return NotFound();
@@ -89,6 +97,7 @@ namespace Blog.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Title,Description,LinkImage,Id,UserId")] Post post)
         {
             if (id != post.Id)
@@ -116,6 +125,7 @@ namespace Blog.Controllers
         }
 
         // GET: Posts/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,6 +134,10 @@ namespace Blog.Controllers
             }
 
             var post = await _postRepository.GetAsync(id);
+
+            if (User.FindFirstValue(ClaimTypes.NameIdentifier) != post.UserId)
+                return NotFound();
+
             if (post == null)
             {
                 return NotFound();
@@ -135,6 +149,7 @@ namespace Blog.Controllers
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _postRepository.DeleteAsync(id);
