@@ -31,6 +31,12 @@ namespace Blog.Controllers
             return View(await _postRepository.GetAllAsync());
         }
 
+        // GET: Posts/MyPosts
+        public async Task<IActionResult> MyPosts()
+        {
+            return View(await _postRepository.GetAllFromUserAsync(User));
+        }
+
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {

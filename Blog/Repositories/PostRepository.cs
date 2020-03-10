@@ -63,5 +63,12 @@ namespace Blog.Repositories
         {
             return _context.Post.Any(e => e.Id == id);
         }
+
+        public async Task<IEnumerable<Post>> GetAllFromUserAsync(ClaimsPrincipal User)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationDbContext = _context.Post.Include(p => p.User).Where(p => p.UserId == userId);
+            return await applicationDbContext.ToListAsync();
+        }
     }
 }

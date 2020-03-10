@@ -10,6 +10,7 @@ namespace Blog.Repositories
     public interface IPostRepository
     {
         Task<Post> GetAsync(int? id);
+        Task<IEnumerable<Post>> GetAllFromUserAsync(ClaimsPrincipal User);
         Task<IEnumerable<Post>> GetAllAsync();
         Task AddAsync(ClaimsPrincipal User, Post post);
         Task UpdateAsync(ClaimsPrincipal User, Post post);
