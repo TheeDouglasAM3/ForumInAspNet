@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-ForumAspNetCore3._1-82E82FC7-F0FB-4349-8E98-189DAF99BD88</UserSecretsId>
+    <RootNamespace>ForumAspNetCore3._1</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200311175056_table-last-application-in-aspnetcore22.cs" />
+    <Compile Remove="Data\Migrations\20200311175056_table-last-application-in-aspnetcore22.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200311181021_add-field-updatedat-in-Postss.cs" />
+    <Compile Remove="Data\Migrations\20200311181021_add-field-updatedat-in-Postss.Designer.cs" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2" />
+  </ItemGroup>
+
+</Project>
