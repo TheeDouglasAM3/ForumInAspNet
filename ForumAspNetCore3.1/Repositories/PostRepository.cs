@@ -47,6 +47,7 @@ namespace ForumAspNetCore3._1.Repositories
         {
             var query = _context.Post.AsNoTracking().Include(p => p.User).OrderBy(p => p.CreatedAt);
             var postPaginate = await PagingList.CreateAsync(query, itensPerPage, page);
+            postPaginate.Reverse();
 
             return postPaginate;
         }
@@ -78,6 +79,7 @@ namespace ForumAspNetCore3._1.Repositories
                 .OrderBy(p => p.CreatedAt);
 
             var postPaginate = await PagingList.CreateAsync(query, itensPerPage, page);
+            postPaginate.Reverse();
 
             return postPaginate;
         }
