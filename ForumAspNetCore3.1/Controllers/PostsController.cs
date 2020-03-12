@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using ForumAspNetCore3._1.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using ReflectionIT.Mvc.Paging;
 
 namespace ForumAspNetCore3._1.Controllers
 {
@@ -26,15 +27,19 @@ namespace ForumAspNetCore3._1.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View(await _postRepository.GetAllAsync());
+            var itensPerPage = 20;
+            return View(await _postRepository.GetAllFromPageAsync(page,itensPerPage));
         }
 
         // GET: Posts/MyPosts
-        public async Task<IActionResult> MyPosts()
+        public async Task<IActionResult> MyPosts(int page = 1)
         {
-            return View(await _postRepository.GetAllFromUserAsync(User));
+            var itensPerPage = 2;
+            var model = await _postRepository.GetAllPageFromUserAsync(User, page, itensPerPage);
+            model.Action = "MyPosts";
+            return View(model);
         }
 
         // GET: Posts/Details/5

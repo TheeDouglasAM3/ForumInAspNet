@@ -1,4 +1,5 @@
 ﻿using ForumAspNetCore3._1.Models;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace ForumAspNetCore3._1.Repositories
     public interface IPostRepository
     {
         Task<Post> GetAsync(int? id);
-        Task<IEnumerable<Post>> GetAllFromUserAsync(ClaimsPrincipal User);
-        Task<IEnumerable<Post>> GetAllAsync();
+        Task<PagingList<Post>> GetAllPageFromUserAsync(ClaimsPrincipal User, int page, int itensPerPage);
+        Task<PagingList<Post>> GetAllFromPageAsync(int page, int itensPerPage);
         Task AddAsync(ClaimsPrincipal User, Post post);
         Task UpdateAsync(ClaimsPrincipal User, Post post);
         Task DeleteAsync(int id);

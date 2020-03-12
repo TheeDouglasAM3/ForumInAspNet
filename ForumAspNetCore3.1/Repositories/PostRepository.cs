@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ForumAspNetCore3._1.Data;
 using ForumAspNetCore3._1.Models;
 using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 
 namespace ForumAspNetCore3._1.Repositories
 {
@@ -42,10 +43,12 @@ namespace ForumAspNetCore3._1.Repositories
             return post;
         }
 
-        public async Task<IEnumerable<Post>> GetAllAsync()
+        public async Task<PagingList<Post>> GetAllFromPageAsync(int page = 1, int itensPerPage = 10)
         {
-            var applicationDbContext = _context.Post.Include(p => p.User);
-            return await applicationDbContext.ToListAsync();
+            var query = _context.Post.AsNoTracking().Include(p => p.User).OrderBy(p => p.CreatedAt);
+            var postPaginate = await PagingList.CreateAsync(query, itensPerPage, page);
+
+            return postPaginate;
         }
 
         public async Task UpdateAsync(ClaimsPrincipal User, Post post)
@@ -64,11 +67,19 @@ namespace ForumAspNetCore3._1.Repositories
             return _context.Post.Any(e => e.Id == id);
         }
 
-        public async Task<IEnumerable<Post>> GetAllFromUserAsync(ClaimsPrincipal User)
+        public async Task<PagingList<Post>> GetAllPageFromUserAsync(ClaimsPrincipal User, int page = 1, int itensPerPage = 10)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationDbContext = _context.Post.Include(p => p.User).Where(p => p.UserId == userId);
-            return await applicationDbContext.ToListAsync();
+
+            var query = _context.Post
+                .AsNoTracking()
+                .Include(p => p.User)
+                .Where(p => p.UserId == userId)
+                .OrderBy(p => p.CreatedAt);
+
+            var postPaginate = await PagingList.CreateAsync(query, itensPerPage, page);
+
+            return postPaginate;
         }
     }
 }

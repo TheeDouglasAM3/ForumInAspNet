@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ForumAspNetCore3._1.Repositories;
 using ForumAspNetCore3._1.Services;
+using ReflectionIT.Mvc.Paging;
 
 namespace ForumAspNetCore3._1
 {
@@ -36,6 +37,11 @@ namespace ForumAspNetCore3._1
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddPaging(options =>
+            {
+                options.ViewName = "Bootstrap4";
+            });
 
             services.AddTransient<IDataService, DataService>();
             services.AddTransient<IPostRepository, PostRepository>();
