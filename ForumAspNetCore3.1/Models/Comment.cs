@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,26 +8,22 @@ using System.Threading.Tasks;
 
 namespace ForumAspNetCore3._1.Models
 {
-    public class Post : BaseModel
+    public class Comment : BaseModel
     {
-        public Post()
+        public Comment()
         {
         }
 
         [ForeignKey("UserId")]
         public string UserId { get; set; }
-
         public virtual IdentityUser User { get; private set; }
 
-        [Required]
-        public string Title { get; set; }
+        [ForeignKey("PostId")]
+        public int PostId { get; set; }
+        public Post Post { get; private set; }
 
         [Required]
-        public string Description { get; set; }
-
-        public string LinkImage { get; set; }
-
-        public List<Comment> Comments { get; set; }
+        public string ContentText { get; set; }
 
     }
 }
