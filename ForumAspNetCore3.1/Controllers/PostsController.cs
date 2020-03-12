@@ -36,7 +36,7 @@ namespace ForumAspNetCore3._1.Controllers
         // GET: Posts/MyPosts
         public async Task<IActionResult> MyPosts(int page = 1)
         {
-            var itensPerPage = 2;
+            var itensPerPage = 20;
             var model = await _postRepository.GetAllPageFromUserAsync(User, page, itensPerPage);
             model.Action = "MyPosts";
             return View(model);
