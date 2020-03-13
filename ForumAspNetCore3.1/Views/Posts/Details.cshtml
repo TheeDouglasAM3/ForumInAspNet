@@ -1,4 +1,4 @@
-﻿@model ForumAspNetCore3._1.Models.Post
+﻿@model ForumAspNetCore3._1.Models.ViewModels.PostAndCommentViewModel
 
 @using Microsoft.AspNetCore.Identity
 
@@ -15,36 +15,45 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.User)
+            @Html.DisplayNameFor(model => model.Post.User)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.Id)
+            @Html.DisplayFor(model => model.Post.User.Id)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Post.Title)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.Post.Title)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Post.Description)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.Post.Description)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.LinkImage)
+            @Html.DisplayNameFor(model => model.Post.LinkImage)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LinkImage)
+            @Html.DisplayFor(model => model.Post.LinkImage)
         </dd>
     </dl>
 </div>
 
-@if (userManager.GetUserId(User) == Model.UserId)
+@if (userManager.GetUserId(User) == Model.Post.UserId)
 {
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Edit" asp-route-id="@Model.Post.Id">Edit</a> |
         <a asp-action="Index">Back to List</a>
     </div>
 }
+
+
+<form  id="comment-form">
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Example textarea</label>
+        <textarea asp-for="Comment.ContentText" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
