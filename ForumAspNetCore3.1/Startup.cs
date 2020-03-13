@@ -43,6 +43,9 @@ namespace ForumAspNetCore3._1
                 options.ViewName = "Bootstrap4";
             });
 
+
+            services.AddDataProtection();
+
             services.AddTransient<IDataService, DataService>();
             services.AddTransient<IPostRepository, PostRepository>();
         }
@@ -62,6 +65,7 @@ namespace ForumAspNetCore3._1
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
