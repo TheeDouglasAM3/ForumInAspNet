@@ -12,6 +12,7 @@ using System.Security.Claims;
 using ForumAspNetCore3._1.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using ReflectionIT.Mvc.Paging;
+using ForumAspNetCore3._1.Models.ViewModels;
 
 namespace ForumAspNetCore3._1.Controllers
 {
@@ -53,7 +54,9 @@ namespace ForumAspNetCore3._1.Controllers
             if (post == null)
                 return NotFound();
 
-            return View(post);
+            var postAndCommentsViewModel = new PostAndCommentViewModel(post);
+
+            return View(postAndCommentsViewModel);
         }
 
         // GET: Posts/Create
