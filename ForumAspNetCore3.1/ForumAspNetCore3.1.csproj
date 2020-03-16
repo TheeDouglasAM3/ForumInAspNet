@@ -11,6 +11,12 @@
     <Compile Remove="Data\Migrations\20200311175056_table-last-application-in-aspnetcore22.Designer.cs" />
     <Compile Remove="Data\Migrations\20200311181021_add-field-updatedat-in-Postss.cs" />
     <Compile Remove="Data\Migrations\20200311181021_add-field-updatedat-in-Postss.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200312232048_update-comment.cs" />
+    <Compile Remove="Data\Migrations\20200312232048_update-comment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200313162854_test.cs" />
+    <Compile Remove="Data\Migrations\20200313162854_test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200313163038_test.cs" />
+    <Compile Remove="Data\Migrations\20200313163038_test.Designer.cs" />
   </ItemGroup>
 
 
@@ -18,8 +24,14 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="ReflectionIT.Mvc.Paging" Version="4.0.0" />
   </ItemGroup>
 

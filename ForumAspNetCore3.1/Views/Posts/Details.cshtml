@@ -50,10 +50,37 @@
 }
 
 
-<form  id="comment-form">
+<form id="comment-form" class="mb-5" asp-action="Create" asp-controller="Comments">
     <div class="form-group">
         <label for="exampleFormControlTextarea1">Example textarea</label>
-        <textarea asp-for="Comment.ContentText" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea name="ContentText" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
     </div>
+    <input type="hidden" name="PostId" value="@Model.Post.Id" />
     <button type="submit" class="btn btn-primary">Enviar</button>
 </form>
+
+@if (Model.Post.Comments.Count > 0)
+{
+    @foreach (var comment in Model.Post.Comments)
+    {
+        <div class="form-group">
+            <label>@comment.User.UserName</label>
+            <textarea readonly class="form-control" rows="3">@comment.ContentText</textarea>
+            @if (comment.CreatedAt.ToString() == comment.UpdatedAt.ToString())
+            {
+                <small>Enviado às @comment.CreatedAt</small>
+            }
+            else
+            {
+                <small>Enviado às @comment.CreatedAt</small><br />
+                <small>Modificado às @comment.UpdatedAt</small>
+            }
+        </div>
+        @if (userManager.GetUserId(User) == comment.UserId)
+        {
+            <button type="button" class="btn btn-warning">Editar</button>
+            <button type="button" class="btn btn-danger">Deletar</button>
+        }
+        <hr /><br />
+    }
+}
