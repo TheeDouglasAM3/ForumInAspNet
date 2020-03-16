@@ -20,11 +20,14 @@ namespace ForumAspNetCore3._1.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IPostRepository _postRepository;
+        private readonly ICommentRepository _commentRepository;
 
-        public PostsController(ApplicationDbContext context, IPostRepository postRepository)
+        public PostsController(ApplicationDbContext context, IPostRepository postRepository, 
+            ICommentRepository commentRepository)
         {
             _context = context;
             _postRepository = postRepository;
+            _commentRepository = commentRepository;
         }
 
         // GET: Posts
@@ -54,7 +57,8 @@ namespace ForumAspNetCore3._1.Controllers
             if (post == null)
                 return NotFound();
 
-            var postAndCommentsViewModel = new PostAndCommentViewModel(post);
+            var comments = await _commentRepository.GetAllFromPost(id);
+            var postAndCommentsViewModel = new PostAndCommentViewModel(post, comments);
 
             return View(postAndCommentsViewModel);
         }
