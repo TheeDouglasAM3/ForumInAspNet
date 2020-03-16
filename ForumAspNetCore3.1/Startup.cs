@@ -48,6 +48,7 @@ namespace ForumAspNetCore3._1
 
             services.AddTransient<IDataService, DataService>();
             services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<ICommentRepository, CommentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
