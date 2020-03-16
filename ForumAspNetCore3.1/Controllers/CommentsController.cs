@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ForumAspNetCore3._1.Data;
 using ForumAspNetCore3._1.Models;
-using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace ForumAspNetCore3._1.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CommentsController : ControllerBase
+    public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
@@ -22,87 +20,145 @@ namespace ForumAspNetCore3._1.Controllers
             _context = context;
         }
 
-        // GET: api/Comments
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetComment()
+        // GET: Comments
+        public async Task<IActionResult> Index()
         {
-            var comments = await _context.Comment.ToListAsync();
-            return comments;
-            
+            var applicationDbContext = _context.Comment.Include(c => c.Post).Include(c => c.User);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: api/Comments/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Comment>> GetComment(int id)
+        // GET: Comments/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            var comment = await _context.Comment.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var comment = await _context.Comment
+                .Include(c => c.Post)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
                 return NotFound();
             }
 
-            return comment;
+            return View(comment);
         }
 
-        // PUT: api/Comments/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutComment(int id, Comment comment)
+        // GET: Comments/Create
+        public IActionResult Create()
+        {
+            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Description");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            return View();
+        }
+
+        // POST: Comments/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(int PostId, [Bind("UserId,PostId,ContentText,Id,CreatedAt,UpdatedAt")] Comment comment)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            comment.UserId = userId;
+            if (ModelState.IsValid)
+            {
+                _context.Add(comment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Description", comment.PostId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
+            return View(comment);
+        }
+
+        // GET: Comments/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var comment = await _context.Comment.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Description", comment.PostId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
+            return View(comment);
+        }
+
+        // POST: Comments/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,PostId,ContentText,Id,CreatedAt")] Comment comment)
         {
             if (id != comment.Id)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(comment).State = EntityState.Modified;
-
-            try
+            if (ModelState.IsValid)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CommentExists(id))
+                try
                 {
-                    return NotFound();
+                    _context.Update(comment);
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!CommentExists(comment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+                return RedirectToAction(nameof(Index));
             }
-
-            return NoContent();
+            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Description", comment.PostId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
+            return View(comment);
         }
 
-        // POST: api/Comments
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Comment>> PostComment(Comment comment)
+        // GET: Comments/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            _context.Comment.Add(comment);
-            await _context.SaveChangesAsync();
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            return CreatedAtAction("GetComment", new { id = comment.Id }, comment);
-        }
-
-        // DELETE: api/Comments/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Comment>> DeleteComment(int id)
-        {
-            var comment = await _context.Comment.FindAsync(id);
+            var comment = await _context.Comment
+                .Include(c => c.Post)
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
             {
                 return NotFound();
             }
 
+            return View(comment);
+        }
+
+        // POST: Comments/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var comment = await _context.Comment.FindAsync(id);
             _context.Comment.Remove(comment);
             await _context.SaveChangesAsync();
-
-            return comment;
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CommentExists(int id)
